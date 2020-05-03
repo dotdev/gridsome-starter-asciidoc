@@ -1,0 +1,79 @@
+== Some Code Examples
+
+.python
+[source, python]
+----
+prices = {'apple': 0.40, 'banana': 0.50}
+my_purchase = {
+    'apple': 1,
+    'banana': 6}
+grocery_bill = sum(prices[fruit] * my_purchase[fruit]
+                   for fruit in my_purchase)
+print ('I owe the grocer $%.2f' % grocery_bill)
+----
+
+.javascripot
+[source, javascript]
+----
+// gridsome.config.js
+module.exports = {
+  plugins: [
+    {
+      use: '@gridsome/source-filesystem',
+      options: {
+        path: 'blog/**/*.adoc',
+        typeName: 'Post',
+        route: '/blog/:doctitle',
+        asciidoc: {
+          // asciidoc options
+        }
+      }
+    }
+  ],
+  transformers: {
+    asciidoc: {
+      // global asciidoc options
+      safe: 'unsafe', // unsafe, safe, server or secure
+      icons: 'font',
+    }
+  }
+}
+----
+
+.ruby
+[source, ruby]
+----
+$global_variable = 10
+class Class1
+   def print_global
+      puts "Global variable in Class1 is #$global_variable"
+   end
+end
+class Class2
+   def print_global
+      puts "Global variable in Class2 is #$global_variable"
+   end
+end
+
+class1obj = Class1.new
+class1obj.print_global
+class2obj = Class2.new
+class2obj.print_global
+----
+
+.c++
+[source, cpp]
+----
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    cout << "Size of char: " << sizeof(char) << " byte" << endl;
+    cout << "Size of int: " << sizeof(int) << " bytes" << endl;
+    cout << "Size of float: " << sizeof(float) << " bytes" << endl;
+    cout << "Size of double: " << sizeof(double) << " bytes" << endl;
+
+    return 0;
+}
+----

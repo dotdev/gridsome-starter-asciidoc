@@ -1,0 +1,395 @@
+= Kroki Plugin
+Max Quordlepleen <max.quordlepleen@hhgttg.org>
+v0.1, May 04, 2020: initial
+
+The link:https://github.com/mogztter/asciidoctor-kroki/[asciidoctor-kroki] plugin enables asciidoc to render diagrams
+using link:https://kroki.io/[Kroki].
+
+== Installation
+
+Install asciidoctor-kroki by running `yarn add asciidoctor-kroki` or `npm install asciidoctor-kroki`.
+
+.gridsome.config.js
+[source, js]
+----
+module.exports = {
+  transformers: {
+    asciidoc: {
+      plugins: [
+        'asciidoctor-kroki',
+      ],
+    },
+  }
+}
+----
+
+== Usage
+
+.example
+[source, adoc]
+----
+= Kroki Plugin
+
+== Plantuml
+
+[plantuml,alice-bob,role=sequence,opts=inline] <1>
+....
+alice -> bob
+....
+
+== Graphviz
+
+[graphviz] <2>
+....
+digraph foo {
+  node [style=rounded]
+  node1 [shape=box]
+  node2 [fillcolor=yellow, style="rounded,filled", shape=diamond]
+  node3 [shape=record, label="{ a | b | c }"]
+
+  node1 -> node2 -> node3
+}
+....
+----
+<1> Generate a plantuml diagram and inline svg the image in the page
+<2> Generate a graphviz diagram and reference it on kroki.io.
+
+By default the extension send and receives information from link:https://kroki.io[]. You can specify you own server by
+setting the `kroki-server-url` attribute. This can be at the top of a document, or in the global `gridsome.config.js`
+`transformers.asiidoc.attributes`.
+
+`:kroki-server-url: http://my-server-url:port`
+
+When setting the `opts=inline` block attribute (see <1> in the example above), an inline svg will be inserted into the
+html page. Please note that in order to use the inline svg images, you need to set the attribute `allow-uri-read`.
+
+=== Results
+
+==== Plantuml
+
+[plantuml,alice-bob,role=sequence,opts=inline]
+....
+alice -> bob
+....
+
+==== Graphviz
+
+[graphviz,opts=inline]
+....
+digraph foo {
+  node [style=rounded]
+  node1 [shape=box]
+  node2 [fillcolor=yellow, style="rounded,filled", shape=diamond]
+  node3 [shape=record, label="{ a | b | c }"]
+
+  node1 -> node2 -> node3
+}
+....
+
+==== Ditaa
+
+[ditaa,opts=inline]
+....
+    +------------+
+    |            |
+    |  Gridsome  |
+    |            |
+    +------------+
+          ^
+  request |
+          v
+  +-------------+
+  |             |
+  |    Kroki    |
+  |             |---+
+  +-------------+   |
+       ^  ^         | inflate
+       |  |         |
+       v  +---------+
+  +-------------+
+  |             |
+  |    Ditaa    |
+  |             |----+
+  +-------------+    |
+             ^       | process
+             |       |
+             +-------+
+
+....
+
+==== Packetdiag
+
+[packetdiag,opts=inline]
+....
+packetdiag {
+  colwidth = 32;
+  node_height = 72;
+
+  0-15: Source Port;
+  16-31: Destination Port;
+  32-63: Sequence Number;
+  64-95: Acknowledgment Number;
+  96-99: Data Offset;
+  100-105: Reserved;
+  106: URG [rotate = 270];
+  107: ACK [rotate = 270];
+  108: PSH [rotate = 270];
+  109: RST [rotate = 270];
+  110: SYN [rotate = 270];
+  111: FIN [rotate = 270];
+  112-127: Window;
+  128-143: Checksum;
+  144-159: Urgent Pointer;
+  160-191: (Options and Padding);
+  192-223: data [colheight = 3];
+}
+....
+
+==== Vega
+
+[vega,opts=inline]
+....
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 400,
+  "height": 200,
+  "padding": 5,
+
+  "data": [
+    {
+      "name": "table",
+      "values": [
+        {"category": "A", "amount": 28},
+        {"category": "B", "amount": 55},
+        {"category": "C", "amount": 43},
+        {"category": "D", "amount": 91},
+        {"category": "E", "amount": 81},
+        {"category": "F", "amount": 53},
+        {"category": "G", "amount": 19},
+        {"category": "H", "amount": 87}
+      ]
+    }
+  ],
+
+  "signals": [
+    {
+      "name": "tooltip",
+      "value": {},
+      "on": [
+        {"events": "rect:mouseover", "update": "datum"},
+        {"events": "rect:mouseout",  "update": "{}"}
+      ]
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "xscale",
+      "type": "band",
+      "domain": {"data": "table", "field": "category"},
+      "range": "width",
+      "padding": 0.05,
+      "round": true
+    },
+    {
+      "name": "yscale",
+      "domain": {"data": "table", "field": "amount"},
+      "nice": true,
+      "range": "height"
+    }
+  ],
+
+  "axes": [
+    { "orient": "bottom", "scale": "xscale" },
+    { "orient": "left", "scale": "yscale" }
+  ],
+
+  "marks": [
+    {
+      "type": "rect",
+      "from": {"data":"table"},
+      "encode": {
+        "enter": {
+          "x": {"scale": "xscale", "field": "category"},
+          "width": {"scale": "xscale", "band": 1},
+          "y": {"scale": "yscale", "field": "amount"},
+          "y2": {"scale": "yscale", "value": 0}
+        },
+        "update": {
+          "fill": {"value": "steelblue"}
+        },
+        "hover": {
+          "fill": {"value": "red"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "enter": {
+          "align": {"value": "center"},
+          "baseline": {"value": "bottom"},
+          "fill": {"value": "#333"}
+        },
+        "update": {
+          "x": {"scale": "xscale", "signal": "tooltip.category", "band": 0.5},
+          "y": {"scale": "yscale", "signal": "tooltip.amount", "offset": -2},
+          "text": {"signal": "tooltip.amount"},
+          "fillOpacity": [
+            {"test": "datum === tooltip", "value": 0},
+            {"value": 1}
+          ]
+        }
+      }
+    }
+  ]
+}
+....
+
+==== Vega Lite
+
+[vegalite,opts=inline]
+....
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "Horizontally concatenated charts that show different types of discretizing scales.",
+  "data": {
+    "values": [
+      {"a": "A", "b": 28},
+      {"a": "B", "b": 55},
+      {"a": "C", "b": 43},
+      {"a": "D", "b": 91},
+      {"a": "E", "b": 81},
+      {"a": "F", "b": 53},
+      {"a": "G", "b": 19},
+      {"a": "H", "b": 87},
+      {"a": "I", "b": 52}
+    ]
+  },
+  "hconcat": [
+    {
+      "mark": "circle",
+      "encoding": {
+        "y": {
+          "field": "b",
+          "type": "nominal",
+          "sort": null,
+          "axis": {
+            "ticks": false,
+            "domain": false,
+            "title": null
+          }
+        },
+        "size": {
+          "field": "b",
+          "type": "quantitative",
+          "scale": {
+            "type": "quantize"
+          }
+        },
+        "color": {
+          "field": "b",
+          "type": "quantitative",
+          "scale": {
+            "type": "quantize",
+            "zero": true
+          },
+          "legend": {
+            "title": "Quantize"
+          }
+        }
+      }
+    },
+    {
+      "mark": "circle",
+      "encoding": {
+        "y": {
+          "field": "b",
+          "type": "nominal",
+          "sort": null,
+          "axis": {
+            "ticks": false,
+            "domain": false,
+            "title": null
+          }
+        },
+        "size": {
+          "field": "b",
+          "type": "quantitative",
+          "scale": {
+            "type": "quantile",
+            "range": [80, 160, 240, 320, 400]
+          }
+        },
+        "color": {
+          "field": "b",
+          "type": "quantitative",
+          "scale": {
+            "type": "quantile",
+            "scheme": "magma"
+          },
+          "legend": {
+            "format": "d",
+            "title": "Quantile"
+          }
+        }
+      }
+    },
+    {
+      "mark": "circle",
+      "encoding": {
+        "y": {
+          "field": "b",
+          "type": "nominal",
+          "sort": null,
+          "axis": {
+            "ticks": false,
+            "domain": false,
+            "title": null
+          }
+        },
+        "size": {
+          "field": "b",
+          "type": "quantitative",
+          "scale": {
+            "type": "threshold",
+            "domain": [30, 70],
+            "range": [80, 200, 320]
+          }
+        },
+        "color": {
+          "field": "b",
+          "type": "quantitative",
+          "scale": {
+            "type": "threshold",
+            "domain": [30, 70],
+            "scheme": "viridis"
+          },
+          "legend": {
+            "title": "Threshold"
+          }
+        }
+      }
+    }
+  ],
+  "resolve": {
+    "scale": {
+      "color": "independent",
+      "size": "independent"
+    }
+  }
+}
+....
+
+==== WaveDrom
+
+[wavedrom,opts=inline]
+....
+{ signal: [
+  { name: "clk",         wave: "p.....|..." },
+  { name: "Data",        wave: "x.345x|=.x", data: ["head", "body", "tail", "data"] },
+  { name: "Request",     wave: "0.1..0|1.0" },
+  {},
+  { name: "Acknowledge", wave: "1.....|01." }
+]}
+....

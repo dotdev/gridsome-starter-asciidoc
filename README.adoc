@@ -1,0 +1,19 @@
+= Asciidoc starter for Gridsome
+
+This is an Asciidoc starter / example project demonstating the use and capabilities of the
+link:https://github.com/dotdev/transformer-asciidoc[asciidoc transformer]. It is based on the
+link:https://github.com/alexbrown/gridsome-starter-minimal-blog[gridsome-starter-minimal-blog] by
+link:https://alex.design/[Alex Brown].
+
+You can view it live in action on link:https://gridsome-starter-asciidoc.netlify.app[]
+
+== 1. Install the Gridsome CLI tool if you don't have it
+
+`npm install --global @gridsome/cli`
+
+== 2. Create a Gridsome Asciidoc project
+
+1. `gridsome create my-gridsome-site dotdev/gridsome-starter-asciidoc` to install this starter project
+2. `cd my-gridsome-site` to open the folder
+3. `gridsome develop` to start a local dev server at `http://localhost:8080`
+4. Happy coding 🎉🙌

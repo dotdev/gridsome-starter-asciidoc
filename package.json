@@ -7,6 +7,17 @@
     "explore": "gridsome explore"
   },
   "dependencies": {
-    "gridsome": "^0.7.0"
+    "@dotcircle/transformer-asciidoc": "^0.0.1",
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "@gridsome/source-filesystem": "^0.6.2",
+    "asciidoctor-chart": "^0.2.1",
+    "asciidoctor-katex": "^0.3.2",
+    "asciidoctor-kroki": "^0.8.2",
+    "gridsome": "^0.7.0",
+    "node-sass": "^4.14.0",
+    "sass-loader": "^8.0.2"
+  },
+  "devDependencies": {
+    "normalize.css": "^8.0.1"
   }
 }

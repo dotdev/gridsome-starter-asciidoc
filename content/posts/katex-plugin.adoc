@@ -1,0 +1,77 @@
+= KaTeX Plugin
+:author: Lord High Sanvalvwag of Hollop
+:email: sanvalvwag@hhgttg.org
+:revnumber: 0.2
+:revdate: May 03, 2020
+:revnote: initial
+:stem: latexmath
+
+The link:https://github.com/jirutka/asciidoctor-katex[asciidoctor-katex] plugin enables latexmath in your web pages.
+
+== Installation
+
+Install asciidoctor-katex by running `yarn add asciidoctor-katex` or `npm install asciidoctor-katex`. +
+And add it to your config:
+
+.gridsome.config.js
+[source, js]
+----
+module.exports = {
+  transformers: {
+    asciidoc: {
+      plugins: [
+        'asciidoctor-katex',
+      ],
+    },
+  }
+}
+----
+
+The KaTeX stylesheet must also be included:
+
+[source, css]
+----
+@import '~katex/dist/katex.css';
+----
+
+== Usage
+
+.example
+[source, adoc]
+----
+= KaTeX Plugin
+:stem: latexmath <1>
+
+Water (stem:[H_2O]) is a critical component.
+
+.Mass–energy equivalence
+[latexmath]
+++++
+E = mc^2
+++++
+
+.summation notation
+[latexmath]
+++++
+\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+++++
+----
+<1> The `stem` attribute must be set to `latexmath` in order for katex to be able to do its job.
+
+=== Results
+
+Just to make a sentence using inline math blocks:
+
+Water (stem:[H_2O]) is a critical component.
+
+.Mass–energy equivalence
+[latexmath]
+++++
+E = mc^2
+++++
+
+.summation notation
+[latexmath]
+++++
+\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+++++

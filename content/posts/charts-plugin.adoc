@@ -1,0 +1,95 @@
+= Charts Plugin
+Murray Bost Henson <murray@hhgttg.org>
+v0.1, May 05, 2020: initial
+:chart: true
+
+The link:https://github.com/mogztter/asciidoctor-chart[asciidoctor-chart] plugin enables you to embed chart.js charts on
+the web page.
+
+== Installation
+
+Install asciidoctor-chart by running `yarn add asciidoctor-chart` or `npm install asciidoctor-chart`.
+
+
+.gridsome.config.js
+[source, js]
+----
+module.exports = {
+  transformers: {
+    asciidoc: {
+      plugins: [
+        'asciidoctor-chart',
+      ],
+    },
+  }
+}
+----
+
+Make sure to read the documentation on their website as it contains essential information to the working of this plugin,
+but essentially you need to include the chartist css and javascript files in the page.
+
+To do this in a Gridsome template vue file, you could do something like this:
+
+.template.vue
+[source, markup]
+----
+<script>
+export default {
+mounted() {
+    const Chartist = require('chartist');
+    const charts = document.querySelectorAll(".ct-chart");
+    charts.forEach((node) => {
+      const options = {
+        height: node.dataset['chartHeight'],
+        width: node.dataset['chartWidth'],
+        colors: node.dataset['chartColors'].split(','),
+      };
+      const dataset = Object.assign({}, node.dataset);
+      const series = Object.values(Object.keys(dataset)
+        .filter((key) => key.startsWith('chartSeries-'))
+        .reduce((obj, key) => {
+          obj[key] = dataset[key];
+          return obj;
+        }, {})).map((value) => value.split(','));
+      const data = {
+        labels: node.dataset['chartLabels'].split(','),
+        series: series,
+      };
+      Chartist[node.dataset['chartType']](node, data, options);
+    });
+  }
+}
+</script>
+
+<style lang="scss">
+  .ct-chart {
+    @import "~chartist/dist/chartist.min.css";
+  }
+</style>
+----
+
+== Usage
+
+.example
+[source, adoc]
+----
+= Charts Plugin
+
+.sales
+[chart,line]
+....
+January,February,March
+28,48,40
+65,59,80
+....
+----
+
+=== Results
+
+.sales
+[chart,line]
+....
+January,February,March
+28,48,40
+65,59,80
+....

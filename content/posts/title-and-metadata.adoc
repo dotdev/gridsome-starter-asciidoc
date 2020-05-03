@@ -1,0 +1,65 @@
+= Title and Metadata: Setting metadata on a document
+Effrafax of Wug <effrafax@hhgttg.org>; Deep Thought <deepthought@hhgttg.org>
+v1.0, May 01, 2020: The first post written in Asciidoc
+:description: This page describes how to set the document title and metadata
+
+This page describes how to set and use the document title and metatada in Gridsome & GraphQL
+
+.The source of this document
+[source, adoc]
+----
+= Title and Metadata: Setting metadata on a document <1>
+Effrafax of Wug <effrafax@hhgttg.org>; Deep Thought <deepthought@hhgttg.org> <2>
+v1.0, May 01, 2020: The first post written in Asciidoc <3>
+:description: This page describes how to set the document title and metadata <4>
+
+This page describes how to set and use the document title and metatada <5>
+in Gridsome & GraphQL
+
+== First Chapter
+----
+<1> Title and Subtitle (Title: Subtitle)
+    The title is mandatory, the subtitle is optional
+<2> The semi-colon separated list of authors
+<3> The revision information containing the version, date and revision note
+    The version and date must follow each other, separated by a comma. The revision note is optional
+<4> The description tag
+<5> The first paragraph between the Level 1 heading and the first sub chapter is also known as the preamble.
+
+Each document must at least contain a Level 1 heading which is available in GraphQL as the `title` and `doctitle` (title is
+just an alias for the doctitle). +
+The subtitle is optional and will be set to an empty string if not available. It is accessible in GraphQL by the property `subtitle` +
+All tags are available by the same GraphQL property name (`description` in this example) +
+The `preamble` is the first paragraph that follows the document title if there is one before the first subtitle. +
+The `excerpt` is set to the preamble if one is found, otherwise to the `description`. If neither of those is found, it
+will remain an empty string. +
+To get the authors from GraphQL there's a couple of properties exposed:
+
+* `authors`: A string with all the author names, comma separated +
+             (`Effrafax of Wug, Deep Thought` in this example)
+* `authorcount`: An integer with the number of authors (`2` in this example)
+* `authorlist`: An object with the following sub-properties:
+** `author`: (`Effrafax of Wug` and `Deep Thought` in this example)
+** `email`: (`effrafax@hhgttg.org` and `deepthought@hhgttg.org` in this example)
+** `firstname`: (`Effrafax` and `Deep` in this example)
+** `lastname`: (`Wug` and `Thought` in this example)
+** `middlename`: (`of` and `{nbsp}` in this example)
+** `authorinitials`: (`EoW` and `DT` in this example)
+
+An alternative way of setting the same properties is by the use of attributes:
+
+[source, adoc]
+----
+= Title and Metadata: Setting metadata on a document
+:author: Effrafax of Wug
+:email: effrafax@hhgttg.org
+:revnumber: 1.0
+:revdate: May 01, 2020
+:revremark: The first post written in Asciidoc
+:description: This page describes how to set the document title and metadata
+
+This page describes how to set and use the document title and metatada <5>
+in Gridsome & GraphQL
+
+== First Chapter
+----

@@ -1,0 +1,49 @@
+@import '~normalize.css';
+/**
+ * This is the default asciidoc stylesheet
+ * Totally optional, but it gives us an quick and easy start for this template
+ */
+@import '~@asciidoctor/core/dist/css/asciidoctor.css';
+
+/**
+ * Setting the fontawesome font path so that used webfonts can be installed (they'll end up under /assets/fonts/)
+ */
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+
+/**
+ * Including the fontawesome webfonts and css
+ */
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+
+/**
+ * Include the default prism stylesheet
+ */
+@import '~prismjs/themes/prism.css';
+
+/**
+ * Some global styles
+ */
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  border-bottom-color: currentColor;
+  color: #686867;
+}
+
+/**
+ * Asciidoctor uses the Font Awesome 4.7 class names. We'll override them to use the Font Awesome 5 icons
+ */
+
+.fa-check-square-o:before {
+  font-weight: 400;
+  content: "\f14a";
+}
+
+.fa-square-o:before {
+  font-weight: 400;
+  content: "\f0c8";
+}
