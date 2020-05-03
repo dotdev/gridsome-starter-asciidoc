@@ -9,6 +9,9 @@
         <span v-if="$page.post">
           &diamondsuit; Edit this page on <a target="_blank" class="link" :href="'//github.com/dotdev/gridsome-starter-asciidoc/blob/master/' + $page.post.fileInfo.path">Github</a>
         </span>
+        <span v-else>
+         &diamondsuit; View on <a target="_blank" class="link" href="//github.com/dotdev/gridsome-starter-asciidoc">Github</a>
+        </span>
       </p>
     </footer>
   </main>
